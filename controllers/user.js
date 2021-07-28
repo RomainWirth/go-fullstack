@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
 
@@ -29,7 +30,11 @@ exports.login = (req, res, next) => { // fonction login
             }
             res.status(200).json({ // si tout est OK on renvoie à l'utilisateur son user id et un TOKEN 
                 userId: user._id,
-                token: 'TOKEN' // (= chaîne de caractères pour l'instant mais c'est le TOKEN D'authentification)
+                token: jwt.sign(
+                    { userId: user._id },
+                    'RANDOM_TOKEN_SECRET',
+                    { expiration: '24h' } // chaque token va durer 24h : au delà ce ne sera plus valable
+                ) //'TOKEN' (= chaîne de caractères pour l'instant mais c'est le TOKEN D'authentification)
             });
         })
         .catch(error => res.status(500).json({ error }));
