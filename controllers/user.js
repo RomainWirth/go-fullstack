@@ -33,7 +33,7 @@ exports.login = (req, res, next) => { // fonction login
                 token: jwt.sign(
                     { userId: user._id },
                     'RANDOM_TOKEN_SECRET',
-                    { expiration: '24h' } // chaque token va durer 24h : au delà ce ne sera plus valable
+                    { expiresIn: '24h' } // chaque token va durer 24h : au delà ce ne sera plus valable
                 ) //'TOKEN' (= chaîne de caractères pour l'instant mais c'est le TOKEN D'authentification)
             });
         })
